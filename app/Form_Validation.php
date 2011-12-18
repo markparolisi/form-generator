@@ -1,6 +1,6 @@
 <?php
 
-class FormValidation {
+class Form_Validation {
 
     public $validationArray = array();
     public $formId = 'default';

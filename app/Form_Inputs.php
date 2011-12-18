@@ -1,17 +1,17 @@
 <?php
 
-class FormInputs {
+class Form_Inputs {
 
     public $errors = array();
     public $inputs = '';
     public $formValidation = array();
 
-    public function __construct($iniArray = null) {
+    public function __construct($iniArray) {
         $this->setInputs($iniArray);
         $this->inputs = $this->convertToUTF8($this->inputs);
     }
 
-    public function setInputs($iniArray=null) {
+    private function setInputs($iniArray=null) {
         if (count($iniArray) > 1) {
             $this->inputs .= "<fieldset>\n";
             $stage_counter = 1;
@@ -59,11 +59,11 @@ class FormInputs {
             $this->inputs .= '<input type="hidden" name="stage" id="stage" value="' . $stage_counter . '"/>';
             $this->inputs .= '</fieldset>' . "\n";
         } else {
-            $this->inputs = false;
+           return false;
         }
     }
 
-    public function checkInputErrors($required, $accepted, $input_array) {
+    private function checkInputErrors($required, $accepted, $input_array) {
         foreach ($required as $key => $value) {
             if (!array_key_exists($value, $input_array)) {
                 $this->errors[] = $value . ' is required for' . $key;
@@ -82,7 +82,7 @@ class FormInputs {
         }
     }
 
-    public function checkNullInputs($input_array) {
+    private function checkNullInputs($input_array) {
         $clean_array = array();
         $check_vals = array("name", "id", "class", "value", "rows", "cols", "displayname", "for");
         foreach ($check_vals as $check_val) {
@@ -91,7 +91,7 @@ class FormInputs {
         return $input_array;
     }
 
-    public function createTextInput($input_array) {
+    private function createTextInput($input_array) {
         $accepted = array('type', 'name', 'id', 'value', 'class', 'stage', 'validation');
         $required = array('type', 'name', 'id');
         $this->checkInputErrors($required, $accepted, $input_array);
@@ -99,7 +99,7 @@ class FormInputs {
         $this->inputs .= '<input type="text" name="' . $input_array["name"] . '" id="' . $input_array["id"] . '" title="' . $input_array["value"] . '" value="' . $input_array["value"] . '" class="' . $input_array["class"] . '" />' . "\n";
     }
 
-    public function createTextarea($input_array) {
+    private function createTextarea($input_array) {
         $accepted = array('type', 'name', 'id', 'value', 'class', 'stage', 'rows', 'cols', 'validation');
         $required = array('type', 'name', 'id');
         $this->checkInputErrors($required, $accepted, $input_array);
@@ -107,7 +107,7 @@ class FormInputs {
         $this->inputs.= '<textarea name="' . $input_array["name"] . '" id="' . $input_array["id"] . '" class="' . $input_array["class"] . ' "title="' . $input_array["value"] . '" cols="' . $input_array["cols"] . '" rows="' . $input_array["rows"] . '" >' . $input_array["value"] . '</textarea>          ';
     }
 
-    public function createSelect($input_array) {
+    private function createSelect($input_array) {
         $accepted = array('type', 'name', 'id', 'value', 'class', 'stage', 'rows', 'cols', 'optvalue', 'optdisplayname', 'title', 'validation');
         $required = array('type', 'name', 'id', 'optvalue', 'optdisplayname');
         $this->checkInputErrors($required, $accepted, $input_array);
@@ -116,7 +116,7 @@ class FormInputs {
         $value = (!empty($input_array['value'])) ? $input_array['value'] : '';
         $class = (!empty($input_array['class'])) ? $input_array['class'] : '';
         $title = (!empty($input_array['title'])) ? $input_array['title'] : '';
-        $this->inputs .='<select name="' . $name . '" id="' . $id . '" "title="' . $title . '" class="' . $class . '" >' . "\n";
+        $this->inputs .='<select name="' . $name . '" id="' . $id . '" title="' . $title . '" class="' . $class . '" >' . "\n";
         if (!empty($input_array['optdisplayname'])) {
             $optdisplayname = $input_array['optdisplayname'];
             foreach ($input_array['optvalue'] as $key => $input_array) {
@@ -126,7 +126,7 @@ class FormInputs {
         $this->inputs .= '</select>' . "\n";
     }
 
-    public function createRadio($input_array) {
+    private function createRadio($input_array) {
         $accepted = array('type', 'name', 'id', 'value', 'class', 'stage', 'displayname', 'validation');
         $required = array('type', 'name', 'id', 'value');
         $this->checkInputErrors($required, $accepted, $input_array);
@@ -134,7 +134,7 @@ class FormInputs {
         $this->inputs .= '<input type="radio" value="' . $input_array["value"] . '" id="' . $input_array["id"] . '"  name="' . $input_array["name"] . '" class="' . $input_array["class"] . '" />' . $input_array["displayname"];
     }
 
-    public function createCheckbox($input_array) {
+    private function createCheckbox($input_array) {
         $accepted = array('type', 'name', 'id', 'value', 'class', 'stage', 'displayname', 'title', 'validation');
         $required = array('type', 'name', 'id', 'value');
         $this->checkInputErrors($required, $accepted, $input_array);
@@ -142,7 +142,7 @@ class FormInputs {
         $this->inputs .= '<input type="checkbox" value="' . $input_array["value"] . '" id="' . $input_array["id"] . '" title="' . $input_array["value"] . '" name="' . $input_array["name"] . '" class="' . $input_array["class"] . '" />' . $input_array["displayname"] . "\n";
     }
 
-    public function createSubmit($input_array) {
+    private function createSubmit($input_array) {
         $accepted = array('type', 'name', 'id', 'value', 'class', 'stage', 'validation');
         $required = array('type', 'name', 'id');
         $this->checkInputErrors($required, $accepted, $input_array);
@@ -150,7 +150,7 @@ class FormInputs {
         $this->inputs.= '<input type="submit" name="' . $input_array["name"] . '" id="' . $input_array["id"] . '" class="' . $input_array["class"] . '" value="' . $input_array["value"] . '" />' . "\n";
     }
 
-    public function createButton($input_array) {
+    private function createButton($input_array) {
         $accepted = array('type', 'name', 'id', 'value', 'class', 'stage', 'validation');
         $required = array('type', 'name', 'id');
         $this->checkInputErrors($required, $accepted, $input_array);
@@ -158,7 +158,7 @@ class FormInputs {
         $this->inputs.= '<input type="button" name="' . $input_array["name"] . '" id="' . $input_array["id"] . '" class="' . $input_array["class"] . '" value="' . $input_array["value"] . '" />';
     }
 
-    public function createHiddenInput($input_array) {
+    private function createHiddenInput($input_array) {
         $accepted = array('type', 'name', 'id', 'value', 'class', 'stage', 'validation');
         $required = array('type', 'name', 'id');
         $this->checkInputErrors($required, $accepted, $input_array);
@@ -166,7 +166,7 @@ class FormInputs {
         $this->inputs .= '<input type="hidden" name="' . $input_array["name"] . '" id="' . $input_array["id"] . '" value="' . $input_array["value"] . '" class="' . $input_array["class"] . '" />' . "\n";
     }
 
-    public function createLabel($input_array) {
+    private function createLabel($input_array) {
         $accepted = array('type', 'for', 'id', 'value', 'class', 'stage');
         $required = array('type', 'value');
         $this->checkInputErrors($required, $accepted, $input_array);
@@ -174,7 +174,7 @@ class FormInputs {
         $this->inputs.= '<label for="' . $input_array["for"] . '" id="' . $input_array["id"] . '" class="' . $input_array["class"] . '" >' . $input_array["value"] . '</label>' . "\n";
     }
 
-    public function convertToUTF8($inputs) {
+    private function convertToUTF8($inputs) {
         if (mb_detect_encoding($inputs, "UTF-8, ISO-8859-1, GBK") != "UTF-8") {
             return mb_convert_encoding($inputs, "HTML-ENTITIES", "UTF-8");
         } else {
@@ -194,4 +194,4 @@ class FormInputs {
 
 }
 
-//  End FormInputs Class
+//  End Form_Inputs Class

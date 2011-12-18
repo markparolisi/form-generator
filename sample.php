@@ -14,11 +14,11 @@ function get_files($d) {
 
 $files = get_files(INI_DIR);
 ?>
-<html>
+<!html>
     <head>
         <title>Sample Form</title>
         <?php
-        $form = new Form($ini);
+        $form = new Form_Generator($ini);
         $form->printFormJS();
         ?>
         <script type="text/javascript">
