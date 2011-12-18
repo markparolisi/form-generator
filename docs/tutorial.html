@@ -1,0 +1,243 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Form Generator Tutorial</title>
+        <style type="text/css">
+            html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td{margin:0; padding:0; border:0; outline:0; font-size:100%; vertical-align:baseline; background:transparent}
+            body{line-height:1.3em; font-size: 14px;}
+            ol, ul{list-style:none}
+            blockquote, q{quotes:none}
+            blockquote:before, blockquote:after,
+            q:before, q:after{content:''; content:none}
+            :focus{outline:0}
+            ins{text-decoration:none}
+            del{text-decoration:line-through}
+            table{border-collapse:collapse; border-spacing:0}
+            body {font-family: Helvetica, Arial, sans;}
+            h1, h2, h3 {margin: .2em auto; clear: both;}
+            h1{font-size: 28px; text-align: center; margin: 15px 0;}
+            h2{color: #333; font-size: 22px; border-bottom: 2px solid #333; margin: 15px auto;}
+            h3 {color: #666; font-size: 18px; margin-top: 10px;}
+            div {padding: 5px 10px; border: 3px solid #ddd; margin: 5px auto;}
+            p {margin: 10px 0; }
+            .right {float: right;}
+            .left {float: left;}
+            .clear {clear: both; border: none; padding: 0;}
+            .red {color: red;}
+            img {display: block; margin: 5px; border: 4px solid #eee; -moz-box-shadow: 3px 3px 5px #bbb}
+            pre {display: block; float: none; clear: none;}
+            ul {margin: 3px 15px 10px 15px; padding: 10px; background-color: #eee; }
+            code {background-color: #efefef; padding: 10px; margin: 0px 10px; display: block; }
+            #backtotop {position: fixed; right: 0px; top:90%; margin: 0; cursor: pointer; padding: 8px;background: #eee; -moz-transform: rotate(-90deg);}
+            #container {width: 800px; margin: 25px auto;-moz-box-shadow: 2px 3px 8px #bbb}
+            #jumplist {padding: 0; background: none; text-align: center; margin: 0;}
+            #jumplist li {display: inline; width: 120px; margin: 0px; height: 50px;}
+            #jumplist li a{text-align:right; cursor: pointer; padding: 5px; display: block; background: #eee;}
+            #jumplist li a:hover{background: #bbb; color: #fff;}
+            #jumplist {position: fixed; right: 0; top: 60%; }
+            #container #jumplist {position: relative; margin: 5px 15px; width: 225px;}
+            #container #jumplist li {margin: 5px;}
+            #container #jumplist li a {text-align: left;}
+        </style>
+        <script type="text/javascript" src="../js/jquery.min.js"></script>
+        <script type="text/javascript">
+            jQuery(document).ready(function($){
+
+                $('#jumplist').clone().appendTo('body');
+
+                $('a.jumpto').click(function(){
+                    theDivId = '#'+$(this).attr('rel');
+                    $('html, body').animate({
+                        scrollTop: $(theDivId).offset().top
+                    }, 1500);
+
+                });
+                $('#backtotop').click(function(){
+                    $('html, body').animate({
+                        scrollTop: 0
+                    }, 2000);
+                });
+
+            });
+        </script>
+    </head>
+    <body>
+        <a id="backtotop">Back to Top</a>
+        <div id="container">
+            <h1>CKG Form Application Documentation</h1>
+            <h2>Introduction</h2>
+            <div>
+                <p>This document describes and outlines the use of the Compass Knowledge Group form application. The purpose is to standardize not only the output of this organization's web forms, but also their configuration, rules, and capabilities. The base application can be included in any static PHP file, and we also support a WordPress plugin version containing the same classes, just additional WordPress-required functions and some other added convenience features.</p>
+            </div>
+            <h2>Jump To Content:</h2>
+            <ul id="jumplist">
+                <li><a rel="elem" class="jumpto">Creating Form Elements</a></li>
+                <li><a rel="stages" class="jumpto">Staged Forms</a></li>
+                <li><a rel="val" class="jumpto">Validation</a></li>
+                <li><a rel="call" class="jumpto">Calling the Form on a Page</a></li>
+                <li><a rel="js" class="jumpto">Required and Optional JS</a></li>
+                <li><a rel="thanks" class="jumpto">Thank You Messages</a></li>
+                <li><a rel="ga" class="jumpto">Google Analytics</a></li>
+                <li><a rel="gm" class="jumpto">GoldMine Response</a></li>
+                <div class="clear"></div>
+            </ul>
+            <h2>Some Basic Rules</h2>
+            <div>
+                <p>The form application creates a form based upon the values and layout of an ini file. It is important that these files are constructed correctly, otherwise the form will not look or function as expected.</p>
+                <p>Each form is identified by an ID that matches the filename of the ini. If the file is named incorrectly and the form application cannot find the associated file, it renders the default.ini</p>
+                <p>Each element is indexed by a name and has certain attributes like 'type', 'class', 'stage', etc.</p>
+                <p>Elements have required and accepted attributes. If an element is missing a required attribute, or tries to pass an unknown attribute, a warning will be displayed at the top of the form.</p>
+                <p>The order in which elements are placed in an ini determines the order they appear on the form.</p>
+            </div>
+            <h2 id="elem">Exploring Form Elements &amp; Attributes</h2>
+            <h3>The Form Attributes Element</h3>
+            <div>
+                <p>
+                    <img src="img/form_attrs.gif" class="right"/>
+                    This element defines the attributes of the form.
+                    It should be the first element defined in your ini file, though the form will not break if it's not.
+                    Typically nothing about this element will change except for the 'formId' or optionally the 'cssClass'
+                    Always use relative paths for the formAction attribute (e.g. '/form-api/app/form-submit.php'). Setting an absolute path, to a dev server for example, will only ensure it not function when moved to production.
+                </p>
+            </div>
+            <h3>Simple Inputs</h3>
+            <div>
+                <p>Text inputs will be the most common inputs you create (Names, Phone Numbers, Zipcodes, etc). Like all other input elements, they require a name and an id.
+                    You can optionally define CSS classes, Stage position, a default value, and validation rules for these elements.
+                    Invoking the JavaScript toggleFieldValues function will enable the onBlur/onFocus toggling of the default values defined in the ini.
+                    Textarea inputs are constructed the same way as text inputs, but they can accept two additional attributes, 'cols' and 'rows'.
+                </p>
+            </div>
+            <h3>Select (dropdown) Inputs</h3>
+            <div>
+                <p><img src="img/select_input.gif" class="right"/>
+                    Select inputs can be created to retrieve preset information like, State, Program, Interest, etc.
+                    Instead of defining a default value, we need to define a group of options. We do this by passing 'optvalue[ ]' and 'optdisplayname[ ]' attributes.
+                    Please make sure these are ordered corrected as optvalue then optdisplayname then optvalue then optdisplayname. If these are out of order, they wont produced a valid select input.
+                    Typically, it is best-practice to have the first element display a message like 'Please Select...' and set that to an empty value.
+                </p>
+            </div>
+            <h3>Radio Buttons and Checkboxes</h3>
+            <div>
+                <p>These input types are constructed in virtually the indentical manner to each other.
+                    Just create the standard 'name', 'id', and 'value' attributes and pass any additional 'stage', 'class', or 'validation' values.
+                </p>
+            </div>
+
+            <h3>Label Elements</h3>
+            <div>
+                <p>Sometimes we will want to use the label tag to identify inputs on our form (especially on our radio and checkbox inputs).
+                    The label element has the standard attributes of 'id', 'class', and 'stage', but you should assign the 'for' attribute to associate it with its input.
+                    The 'value' attribute will be what is displayed as the label.
+                    Additionally, label elements can be a way of injecting other HTML directly into the form object. Just set the label's value to any well-form HTML for output to a browser.
+                </p>
+            </div>
+            <h3 id="stages">How to use Stages:</h3>
+            <div>
+                <p>Each element in the ini file can accept a value called 'stage'.
+                    This is a numeric representation of which group the element belongs to.
+                    The form application loops through these elements creating fieldsets when new stages are declared (stage = 1, stage = 2)
+                    When the JavaScript <code>useStages(formID)</code> function is called, each fieldset except for the first is hidden, and
+                    on the click event of the 'submit' button the next stage is presented.
+                    Note that the submit button is always removed from all fieldsets and placed at the bottom of the form for constant visibility.
+                </p>
+            </div>
+            <h2 id="val">Setting Validation Rules</h2>
+            <div>
+                <p>Certain rules can be enforced on inputs like a zipcode field should only contain numbers, or an email field should match a standard email expression 'name@domain.com'
+                    By setting a validation attribute on your input you can pass which type of validation to perform. Listed below are the current validation types and descriptions.
+                    <ul>
+                        <li>FullName: input contains two alphanumeric strings</li>
+                        <li>Email: input must be proper email address</li>
+                        <li>Phone: matches US phone number standards, allows for parenthesis and dashes</li>
+                        <li>Zipcode: accepts only numbers</li>
+                        <li>Alphanumeric: letters and numbers only with a minimum input of 2 characters</li>
+                        <li>FirstValue works for dropdown elements. A user must select an option, but not the first one, which typically functions as a "label"</li>
+                        <li>Required: The input must not be empty, and cannot match the input's title attribute.</li>
+                    </ul>
+                    <p>The validation JS is output to the browser by default, and will run on keydown and mousedown on the submit button events.
+                        Error labels will prepend the invalid input and a class of 'invalid' will be added to the error label and its input.</p>
+                </p>
+            </div>
+            <h2 id="call">Placing your form on a Web Page</h2>
+            <div>
+                <p>After the ini is created, the hard-work is over! Now, just include the application's init.php file, create the object and output it to the page.</p>
+                <code>
+                    require_once('form_init.php'); <small>//we have added this script to our servers' PHP include path</small><br />
+                    $form = new Form('theIDofYourForm');<br />
+                    $form->printFormJS();
+                </code>
+                <p>Then place this wherever you want the form to appear:</p>
+                <code>
+                    echo $form->renderForm();
+                </code>
+                <p>If you are using the WordPress plugin of the form application, then the init is already loaded, and you can just create your form object, print the JS, and render the form on a template page.
+                    Whatsmore, if you are also using the Landing Page WordPress plugin, then you do not have to configure any PHP code. It is already set in the header and form template modules.
+                </p>
+            </div>
+            <h2 id="js">Configuring the JavaScript</h2>
+            <div>
+                <p>The form already includes all of our JavaScript libraries and form-specific validation scripts.
+                    However, you must call these functions in the head of your document wrapped in a jQuery doc-ready function.
+                    Make sure you pass the ID of your form to these functions because we may have multiple forms on the same page.
+                    Essentialy, only the useStages() function is required.
+                    However, assigning an anonymous function to a variable named extra_callback will let you run custom code after the form submits.
+                    Similarly, you can use extra_error for code to be executed on validation errors.
+                </p>
+                <code>
+                    jQuery(document).ready(function(){ <br />
+                    &nbsp; toggleFieldValues('#YourFormID'); <br />
+                    &nbsp; useStages('#YourFormID'); <br />
+                    &nbsp; jQuery('#YourFormID #YourResetButton').click(function(){ <br />
+                    &nbsp;&nbsp;    reset_button('#YourFormID'); <br />
+                    &nbsp; }); <br />
+                    &nbsp; extra_callback = function(){ <br />
+                    &nbsp;&nbsp;   this runs on succesful form submission <br />
+                    &nbsp; }); <br />
+                    &nbsp; extra_error = function(){ <br />
+                    &nbsp;&nbsp;   this runs if there is a validation error <br />
+                    &nbsp; }); <br />
+                    });
+                </code>
+                <p>We have also added a new extendable method that can replace the extra_callback function. You can bind and function to the "formSuccess" event. The reason for this is that the old extra_callback can only be defined once, whereas you can attach an infinite number of events to "formSuccess".</p>
+                <code>
+                    jQuery(document).bind("formSuccess", function(){ <br />
+                    &nbsp;&nbsp;$('#form_title, #intro_text').remove();<br />
+                    });
+                </code>
+                <p class="red"><strong>Important: </strong>Instead of call both the toggleFieldValues and useStages function, you may now call them both with the following function. The old function call will still however work.</p>
+                <code>
+                    ckgFormInit('#YourFormID');
+                </code>
+            </div>
+
+            <h2 id="thanks">Thank You Messages</h2>
+            <div>
+                <p>Most forms only have one 'thank you' message. In this case, simply id an element: 'default_thankyou' and the contents of the element will replace the form content on successful form submission.
+                    If however, you have different thank you messages for different program codes, likely generated from a select dropdown list, then you can also achieve this easily.
+                    Give your elements the same ID as the program name, just replace the spaces with underscores. So, 'EKU BS OS' would be 'EKU_BS_OS'.
+                    The form application will grab the contents of the element that mathces the user's selected value.</p>
+            </div>
+            <h2 id="ga">Google Analytics</h2>
+            <div>
+                <p>Make sure all of the initial page trackers are declared BEFORE calling the form JS.</p>
+                <p>A page's goal tracker value can be set in the form as a hidden field with the ID of goal_tracker.</p>
+                <p>Firing conversion codes requires placing that script or tracking image in the extra_callback function.</p>
+                <code>
+                    extra_callback = function(){ <br />
+                    &nbsp; $('body').append('< img src="conversion_code.gif" />'); <br />
+                    }
+                </code>
+            </div>
+            <h2 id="gm">GoldMine Respose</h2>
+            <div>
+                <p>The Form API which interacts with GoldMine will either send back an XML record of a successful insert, or an error message.</p>
+                <p>Instead of outputting this message to the browser, checking it in the 'net' section of firebug is suggested.</p>
+                <p>Simply view the respose from the post data that was sent to the processing script (e.g. /form-api/app/form-submit.php)</p>
+                <p>If the user does not have JavaScript enabled, they will be directed to the form processing page and receive a generic thank you before being redirected back to the referring page after five seconds.</p>
+            </div>
+
+        </div>
+    </body>
+</html>
