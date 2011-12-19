@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Generate jQuery Validate script
+ */
 class Form_Validation {
 
     public $validationArray = array();
@@ -81,9 +83,9 @@ class Form_Validation {
         $jq_validation_code = <<<HEREDOC
         <script type='text/javascript'>
          jQuery(document).ready(function($){
-         \t jQuery('#$this->formId #submit_form').bind('mousedown', function(){
-         \t\t jQuery('.activeFieldset').children('input, select, checkbox').each(function(){
-         \t\t\t var inputID = $(this).attr('id');
+         \t jQuery('#$this->formId input[type="submit"]').bind('mousedown', function(){
+         \t\t jQuery('.active-fieldset').children('input, select, checkbox').each(function(){
+         \t\t\t var inputID = $(this).attr('id'); 
          \t\t\t jQuery('#$this->formId').validate({
          \t\t\t\t errorClass: 'invalid',
          \t\t\t\t rules: {
@@ -95,7 +97,7 @@ class Form_Validation {
          \t\t\t\terrorPlacement: function(error, element) {
                                 \t\telement.before(error);
                                 \t} //end moving of invalid labels
-         \t\t\t }).element('#'+inputID); //end validate()
+         \t\t\t }).element('#'+inputID);  //end validate()
          \t\t }); //end each()
          \t }); //end bind()
          }); //end doc ready()

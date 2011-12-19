@@ -1,6 +1,6 @@
 <?php
 require('form_init.php');
-$curl = new CurlSend($_POST);
+$curl = new Curl_Send($_POST);
 $curl->writeLog();
 if (!isset($_REQUEST['error'])) {
 ?>

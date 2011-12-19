@@ -21,21 +21,6 @@ $files = get_files(INI_DIR);
         $form = new Form_Generator($ini);
         $form->printFormJS();
         ?>
-        <script type="text/javascript">
-            jQuery(document).ready(function(){
-
-                ckgFormInit('#<?php echo $ini; ?>');
-
-                extra_callback = function(){
-
-                }
-
-                extra_error = function(){
-
-                }
-
-            });
-        </script>
         <style type="text/css">
             body {text-align:center; color: #4C4C4C; background: #efefef;}
             .clear {clear: both;}

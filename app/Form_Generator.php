@@ -100,12 +100,17 @@ class Form_Generator {
                 <script type="text/javascript" src="{$domain}jquery.min.js"></script>
                 <script type="text/javascript" src="{$domain}jquery.validate.min.js"></script>
                 $this->jqueryValidationString
-                <script type="text/javascript" src="{$domain}formScripts.js"></script>
+                <script type="text/javascript" src="{$domain}formGenerator.js"></script>
+                    <script type="text/javascript">
+                    jQuery(document).ready(function($){
+                        $('#{$this->formId}').formGenerator();
+                    });
+                    </script>
 HEREDOC;
         return $formJS;
     }
 
-    public function printFormJS($jquery = true) {
+    public function printFormJS() {
         echo $this->generateFormJS();
     }
 

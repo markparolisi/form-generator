@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * Parse the form input data to create HTML inputs while wrapping them in
+ * fieldsets
+ */
 class Form_Inputs {
 
     public $errors = array();
@@ -182,7 +185,7 @@ class Form_Inputs {
         }
     }
 
-    public function getFormInputs() { //send back our input string
+    public function getFormInputs() { 
         if (!empty($this->errors)) {
             $errorString = implode(", ", $this->errors);
             $fullInput = $errorString . $this->inputs;

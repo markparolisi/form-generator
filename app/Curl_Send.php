@@ -1,15 +1,14 @@
 <?php
 
-class CurlSend {
+class Curl_Send {
 
     var $channel;
     var $postData = array();
-    var $apiURL = 'http://api.compassknowledge.com/lead-import/lead-form-submission?';
+    var $apiURL = '';
     var $message = 'Messages';
 
     function __construct($postData = null) {
 
-        //Return error message if no POST data provided.
         if (!$postData)
             return 'No Post Data';
 
@@ -80,4 +79,4 @@ class CurlSend {
 
 }
 
-// End CurlSend Class
+// End Curl_Send Class
